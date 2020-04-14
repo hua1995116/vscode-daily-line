@@ -1,0 +1,100 @@
+<html>
+<head>
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="img-src vscode-resource: data: https:; script-src vscode-resource:; style-src 'unsafe-inline' vscode-resource:;"
+  />
+  <style>
+    html {
+      box-sizing: border-box;
+      padding-top: 32px;
+    }
+    body {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+    }
+
+    #snippet-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      resize: both;
+      background-color: #f2f2f2;
+      border-radius: 4px;
+      transition: opacity .4s;
+      width: calc(100% - 4rem);
+    }
+    #snippet {
+      overflow: hidden;
+      resize: both;
+      position: relative;
+      padding: 0 18px 18px;
+      min-height: 30px;
+      margin-top: 64px;
+      margin-bottom: 64px;
+      border-radius: 5px; 
+      box-shadow: rgba(0, 0, 0, 0.55) 0px 20px 68px;
+      width: calc(100% - 8rem);
+    }
+    #snippet #day {
+      padding: 5px 0;
+      /* text-align: center; */
+    }
+    #snippet #logo {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+    }
+    #snippet > div {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: center;
+      max-width: 100%;
+      white-space: pre-wrap !important;
+      word-break: break-all;
+    }
+    #snippet .line {
+      height: 10px;
+    }
+    #snippet > div > div {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    #save-container {
+      margin-top: 40px;
+      margin-bottom: 60px;
+      text-align: center;
+    }
+    .obturateur {
+      width: 64px;
+      height: 64px;
+    }
+    .obturateur * {
+      transition: stroke .4s;
+    }
+    .obturateur:not(.filling) path {
+      opacity: .5;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="snippet-container">
+    <div id="snippet" style="color: #d8dee9;background-color: #2e3440;font-family: SFMono-Regular,Consolas,DejaVu Sans Mono,Ubuntu Mono,Liberation Mono,Menlo,Courier,monospace;font-weight: normal;font-size: 12px;line-height: 18px;white-space: pre;"><div>唔~暂时丢了数据</div><div id="logo"><svg width="30px" height="30px" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid">
+      <g>
+          <path d="M191.97885,0 L191.97885,219.867316 L0,191.353848 L191.97885,255.998083 L255.97885,229.374998 L255.97885,30.592308 L256,30.5826932 L255.97885,30.5403853 L255.97885,26.6250001 L191.97885,0 Z M124.796158,37.4576925 L65.9942314,95.5826932 L30.5923079,68.9211553 L16.0019234,73.7942316 L52.0192315,109.398076 L16.0019234,145.000006 L30.5923079,149.875005 L65.9942314,123.211541 L65.9961553,123.211541 L124.794228,181.332699 L160.011538,166.369233 L160.011538,52.4211546 L124.796158,37.4576925 Z M124.794228,78.9307702 L124.794228,139.857695 L84.340386,109.394236 L124.794228,78.9307702 Z" fill="#016EC5"></path>
+      </g>
+  </svg></div></div>
+  </div>
+
+  <div id="save-container">
+    <svg id="save" t="1586619650802" class="obturateur" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2266" width="30px" height="30px"><path d="M956.584 867.382H69.818c-26.85 0-48.618-21.766-48.618-48.618V296.402h935.382c26.85 0 48.618 21.766 48.618 48.618v473.746c0.002 26.848-21.766 48.616-48.616 48.616z" fill="#6770E6" p-id="2267"></path><path d="M956.584 296.402H21.202v40h935.382c26.852 0 48.618 21.766 48.618 48.618v-40c0-26.852-21.768-48.618-48.618-48.618z" fill="#8F95E6" p-id="2268"></path><path d="M956.584 827.382H69.82c-26.85 0-48.618-21.766-48.618-48.618v40c0 26.85 21.768 48.618 48.618 48.618h886.764c26.852 0 48.618-21.766 48.618-48.618v-40c0 26.852-21.768 48.618-48.618 48.618z" fill="#5C65CF" p-id="2269"></path><path d="M769.666 156.618H521.328a54.402 54.402 0 0 0-49.992 32.944l-45.86 106.84h440.04l-45.86-106.84a54.398 54.398 0 0 0-49.99-32.944z" fill="#3D3DB8" p-id="2270"></path><path d="M21.202 416.884h984V746.9h-984z" fill="#333399" p-id="2271"></path><path d="M645.496 581.892m-254.896 0a254.896 254.896 0 1 0 509.792 0 254.896 254.896 0 1 0-509.792 0Z" fill="#9FA5FF" p-id="2272"></path><path d="M645.496 581.892m-211.86 0a211.86 211.86 0 1 0 423.72 0 211.86 211.86 0 1 0-423.72 0Z" fill="#333399" p-id="2273"></path><path d="M645.496 581.892m-130.194 0a130.194 130.194 0 1 0 260.388 0 130.194 130.194 0 1 0-260.388 0Z" fill="#29297A" p-id="2274"></path><path d="M207.834 867.382H69.818c-26.85 0-48.618-21.766-48.618-48.618V302c0-26.85 21.766-48.618 48.618-48.618h138.014c26.85 0 48.618 21.766 48.618 48.618v516.764c0 26.852-21.766 48.618-48.616 48.618z" fill="#707AFA" p-id="2275"></path><path d="M207.834 253.382H69.82c-26.85 0-48.618 21.766-48.618 48.618v40c0-26.85 21.768-48.618 48.618-48.618h138.014c26.85 0 48.618 21.766 48.618 48.618v-40c-0.002-26.85-21.768-48.618-48.618-48.618z" fill="#9FA5FF" p-id="2276"></path><path d="M207.834 827.382H69.82c-26.85 0-48.618-21.766-48.618-48.618v40c0 26.85 21.768 48.618 48.618 48.618h138.014c26.85 0 48.618-21.766 48.618-48.618v-40c-0.002 26.852-21.768 48.618-48.618 48.618z" fill="#636CDE" p-id="2277"></path><path d="M21.202 416.882h235.25v330.016H21.202zM165.048 193.162H112.604c-19.03 0-34.456 15.426-34.456 34.456v25.766h121.356v-25.766c0-19.03-15.426-34.456-34.456-34.456z" fill="#3D3DB8" p-id="2278"></path><path d="M514.614 176.618H776.38c20.104 0 38.512 9.964 48.838 25.896l-5.56-12.954a54.402 54.402 0 0 0-49.992-32.944H521.328a54.402 54.402 0 0 0-49.992 32.944l-5.56 12.952c10.326-15.928 28.734-25.894 48.838-25.894zM165.05 193.162H112.604c-19.03 0-34.456 15.426-34.456 34.456v20c0-19.03 15.426-34.456 34.456-34.456h52.446c19.03 0 34.456 15.426 34.456 34.456v-20c-0.002-19.03-15.428-34.456-34.456-34.456z" fill="#6770E6" p-id="2279"></path><path d="M371.526 435.742h-57.53a11.45 11.45 0 0 1-11.45-11.45v-15.66a11.45 11.45 0 0 1 11.45-11.45h57.53a11.45 11.45 0 0 1 11.45 11.45v15.66a11.448 11.448 0 0 1-11.45 11.45z" fill="#69EBFC" p-id="2280"></path><path d="M601.632 519.194c31.062-0.322 43.694 20.64 43.694 20.64s12.216-20.318 43.276-20.64c31.062-0.322 54.526 25.684 54.776 49.91 0.252 24.226-3.338 41.58-48.05 79.646-28.33 24.118-48.506 35.634-48.506 35.634s-20.41-11.096-49.234-34.622c-45.49-37.132-49.438-54.406-49.69-78.634-0.248-24.224 22.672-51.612 53.734-51.934z" fill="#FF8354" p-id="2281"></path></svg>
+  </div>
+
+  <script src="./dom2image.js"></script>
+  <script src="./index.js"></script>
+</body>
+</html>
