@@ -4,13 +4,14 @@ import { StatusBarItem, commands, window, workspace, , ExtensionContext, ViewCol
 import * as fs from 'fs';
 import * as path from 'path';
 import { homedir } from 'os';
-// const psnode = require('find-ps');
 import DailyLine from './dailyline';
-
+const daily = new DailyLine();
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: ExtensionContext) {
-	var debounce = function(func, wait, immediate) {
+	let panel: WebviewPanel;
+	daily.init(context);
+	var debounce = function (func, wait, immediate) {
 		// 设置定时器
 		let timeout;
 		return (...args) => {
@@ -21,16 +22,10 @@ export function activate(context: ExtensionContext) {
 			const callNow = immediate && !timeout;
 			clearTimeout(timeout);
 			timeout = setTimeout(later, wait);
-			if (callNow) 
+			if (callNow)
 				func.apply(this, args);
 		}
-	}；
-
-	const daily = new DailyLine();
-	daily.init(context);
-	// let timer: Timer | null
-	// const timecode = [];
-	// const endTime = [];
+	};
 
 	const htmlPath = path.resolve(context.extensionPath, 'webview/index.html');
 	let lastUsedImageUri = Uri.file(path.resolve(homedir(), 'Desktop/code.png'));
@@ -43,19 +38,17 @@ export function activate(context: ExtensionContext) {
 	});
 
 	workspace.onDidChangeTextDocument(debounce(() => {
-		console.log('code===');
+		console.log('active');
 		daily.setNewTimer();
 	}, 500, true));
 
-	let panel: WebviewPanel;
-
+	
 	window.registerWebviewPanelSerializer('dailyline', {
 		async deserializeWebviewPanel(_panel: WebviewPanel, state: any) {
 			panel = _panel;
 			daily.setPanel(panel);
 			panel.webview.html = getHtmlContent(htmlPath);
-			console.log('reload', daily.getCacheLine());
-			setcode(panel, daily.getCacheLine(), daily.getToday());
+			daily.setcode();
 			setupMessageListeners();
 		}
 	});
@@ -68,13 +61,9 @@ export function activate(context: ExtensionContext) {
 		});
 		daily.setPanel(panel);
 		panel.webview.html = getHtmlContent(htmlPath);
-		console.log('init', daily.getCacheLine());
-		setcode(panel, daily.getCacheLine(), daily.getToday());
+		daily.setcode();
 		setupMessageListeners();
 	});
-
-
-	context.subscriptions.push(daily);
 
 	const writeSerializedBlobToFile = (serializeBlob: any, fileName: string) => {
 		const bytes = new Uint8Array(serializeBlob.split(','));
@@ -102,36 +91,12 @@ export function activate(context: ExtensionContext) {
 			}
 		});
 	}
+	context.subscriptions.push(daily);
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {
-
-}
-
-function setcode(panel: WebviewPanel, line: number, day: string) {
-	// const bgColor = context.globalState.get('polacode.bgColor', '#2e3440')
-	psnode('Visual Studio Code', (error: any, data: string) => {
-		let time = 0;
-		if (!error) {
-			const timelist = data.split(/(:|\.)/);
-			const times: number[] = timelist.filter(item => item !== ':' && item !== '.').map(item => +item);
-			console.log(times);
-			time = +times[0] + times[1] / 60;
-			console.log(time);
-		}
-		const fontFamily = workspace.getConfiguration('editor').fontFamily;
-		const msg = {
-			type: 'update',
-			line,
-			fontFamily,
-			bgColor: '#2e3440',
-			time,
-			day
-		};
-		panel.webview.postMessage(msg);
-	});
-	
+	daily.syncLocal();
 }
 
 function getHtmlContent(htmlPath: string) {

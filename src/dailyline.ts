@@ -1,9 +1,12 @@
-import { StatusBarAlignment, window, WebviewPanel, ExtensionContext } from 'vscode';
+import { StatusBarAlignment, window, WebviewPanel, ExtensionContext, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
 interface Cache {
-	[key: string]: number
+	[key: string]: {
+		line: number;
+		timesteps: TimeCode[]
+	}
 }
 
 interface DayMap {
@@ -25,13 +28,12 @@ class DailyLine {
 	htmlPath: string;
 	timer: number | null;
 	panel: WebviewPanel | null;
-	timecode: TimeCode[];
+	static INTERVAL = 1000 * 60 * 3;
 	constructor() {
 		this.panel = null;
 		this.cache = {};
 		this.dayMap = {};
 		this.timer = null;
-		this.timecode = [];
     }
     init(context: ExtensionContext) {
         this.context = context;
@@ -41,30 +43,53 @@ class DailyLine {
 		this.initCache();
 		this.loadCache();
 		const today = this.getToday();
-		this.statusBar.text = `今日已coding ${this.cache[today] || 0} 行`;
+		this.checkInit(today);
+		this.statusBar.text = `今日已coding ${this.cache[today].line || 0} 行`;
 		this.statusBar.show();
 	}
 	setNewTimer() {
+		const today = this.getToday()
+		const { timesteps } = this.cache[today];
 		if (!this.timer) {
-			this.timecode.push({
+			timesteps.push({
 				startTime: +new Date(),
 				endTime: null
 			})
+			this.syncLocal();
 		}
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
 		this.timer = setTimeout(() => {
-			const lastcode = this.timecode[this.timecode.length - 1];
+			const { timesteps } = this.cache[today];
+			const lastcode = timesteps[timesteps.length - 1];
 
 			if (!lastcode.endTime) {
-				lastcode.endTime = +new Date();
+				lastcode.endTime = Date.now();
 			}
 
-			console.log('记录未写代码时间');
+			if ((lastcode.endTime + DailyLine.INTERVAL) < Date.now()) {
+				lastcode.endTime = Date.now();
+			}
+
+			this.syncLocal();
 			clearTimeout(this.timer);
 			this.timer = null;
-		}, 1000 * 60 * 3);
+		}, DailyLine.INTERVAL);
+	}
+	computedTime(): number {
+		const today = this.getToday()
+		const { timesteps } = this.cache[today];
+		return timesteps.reduce((totalTime, timestep ) => {
+			if (timestep.endTime) {
+				return (timestep.endTime - timestep.startTime) + totalTime;
+			}
+			const now = Date.now();
+			if ((now - timestep.startTime) < DailyLine.INTERVAL) {
+				return now - timestep.startTime + totalTime;
+			}
+			return DailyLine.INTERVAL + totalTime;
+		}, 0);
 	}
 	setPanel(panel: WebviewPanel) {
 		this.panel = panel;
@@ -76,12 +101,15 @@ class DailyLine {
 	}
 	loadCache() {
 		const content = fs.readFileSync(this.cachePath).toString();
-		this.cache = JSON.parse(content);
+		try {
+			this.cache = JSON.parse(content);
+		} catch (e) {
+
+		}
 	}
 	getCacheLine() {
-		console.log(this.cache);
 		const today = this.getToday();
-		return this.cache[today];
+		return this.cache[today].line;
 	}
 	getToday() {
 		const date = new Date();
@@ -97,7 +125,6 @@ class DailyLine {
 		}
 		const content = editor.document.getText();
 		const lastLine = content.split(/\r?\n/);
-		// console.log(lastLine.length, 'last====');
 		return lastLine.length;
 	}
 	open() {
@@ -112,11 +139,13 @@ class DailyLine {
 		const today = this.getToday();
 		this.checkInit(today);
 		this.dayMap[today][fileName] = this.getLine();
-		console.log('open ===', this.dayMap[today][fileName]);
 	}
 	checkInit(today: string) {
 		if (!this.cache[today]) {
-			this.cache[today] = 0;
+			this.cache[today] = {
+				line: 0,
+				timesteps: []
+			};
 		}
 		if (!this.dayMap[today]) {
 			this.dayMap[today] = {};
@@ -142,16 +171,34 @@ class DailyLine {
 		const saveLine = this.getLine();
 		this.checkInitFile(today, fileName);
 		const addcode = saveLine - this.dayMap[today][fileName];
-		console.log(saveLine, this.dayMap[today][fileName]);
 		if (addcode > 0) {
 			this.dayMap[today][fileName] = saveLine;
-			this.cache[today] += addcode;
-			fs.writeFileSync(this.cachePath, JSON.stringify(this.cache));
-			this.statusBar.text = `今日已 coding ${this.cache[today]} 行`;
+			this.cache[today].line += addcode;
+			this.syncLocal()
+			this.statusBar.text = `今日coding ${this.cache[today].line} 行`;
 			if (this.panel) {
-				// setcode(this.panel, this.cache[today], today);
+				this.setcode();
 			}
 		}
+	}
+	syncLocal() {
+		fs.writeFileSync(this.cachePath, JSON.stringify(this.cache));
+	}
+	setcode() {
+		const panel = this.panel;
+		const line = this.getCacheLine();
+		const day = this.getToday();
+		const time = this.computedTime();
+		const fontFamily = workspace.getConfiguration('editor').fontFamily;
+		const msg = {
+			type: 'update',
+			line,
+			fontFamily,
+			bgColor: '#2e3440',
+			time,
+			day
+		};
+		panel.webview.postMessage(msg);
 	}
 	dispose() {
 
