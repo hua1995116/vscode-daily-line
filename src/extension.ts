@@ -1,6 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { StatusBarItem, commands, window, workspace, , ExtensionContext, ViewColumn, Uri, WebviewPanel } from 'vscode';
+import { StatusBarItem, commands, window, workspace, ExtensionContext, ViewColumn, Uri, WebviewPanel } from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { homedir } from 'os';
@@ -11,10 +11,10 @@ const daily = new DailyLine();
 export function activate(context: ExtensionContext) {
 	let panel: WebviewPanel;
 	daily.init(context);
-	var debounce = function (func, wait, immediate) {
+	var debounce = function (func: Function, wait: number, immediate: boolean) {
 		// 设置定时器
-		let timeout;
-		return (...args) => {
+		let timeout: any;
+		return (...args: any[]) => {
 			const later = () => {
 				timeout = null;
 				if (!immediate) func.apply(this, args);

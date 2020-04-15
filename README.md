@@ -1,8 +1,8 @@
-# dailyline
+# Dailyline
 
-help coder to computed dailycode.
+Calculate your daily programming time and number of lines
 
-## demo
+## Demo
 
 command(ctrl) + shift + p
 
@@ -10,4 +10,10 @@ command(ctrl) + shift + p
 
 ![2020-04-13-23.24.20](https://s3.qiufengh.com/blog/2020-04-13-23.24.20.gif)
 
-## L
+## Thanks
+
+icon from 
+
+https://www.iconfont.cn/user/detail?spm=a313x.7781069.0.d214f71f6&uid=757066
+
+https://www.iconfont.cn/user/detail?spm=a313x.7781069.0.d214f71f6&uid=53892

@@ -1,14 +1,15 @@
 {
-	"name": "dailyline",
-	"displayName": "dailyline",
-	"description": "",
-	"version": "0.0.1",
+	"name": "Dailyline",
+	"displayName": "Dailyline",
+	"description": "Calculate your daily programming time and number of lines",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.43.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"icon": "logo.png",
 	"publisher": "qiufeng",
 	"activationEvents": [
 		"*",

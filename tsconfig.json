@@ -8,6 +8,7 @@
 		],
 		"sourceMap": true,
 		"rootDir": "src",
+		"noImplicitThis": false,
 		"strict": true   /* enable all strict type-checking options */
 	},
 	"exclude": [
