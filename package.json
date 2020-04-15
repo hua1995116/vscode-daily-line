@@ -15,6 +15,15 @@
 		"*",
 		"onCommand:dailyline.start"
 	],
+	"author": "hua1995116 <qiufneghyf@gmail.com> (https://github.com/hua1995116)",
+	"homepage": "https://github.com/hua1995116/vscode-daily-line",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hua1995116/vscode-daily-line"
+	},
+	"bugs": {
+		"url": "https://github.com/hua1995116/vscode-daily-line/issues"
+	},
 	"contributes": {
 		"commands": [
 			{
