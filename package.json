@@ -2,7 +2,7 @@
 	"name": "Dailyline",
 	"displayName": "Dailyline",
 	"description": "Calculate your daily programming time and number of lines",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"engines": {
 		"vscode": "^1.43.0"
 	},
@@ -34,16 +34,16 @@
 		]
 	},
 	"configuration": {
-        "type": "object",
-        "title": "Dailyline configuration",
-        "properties": {
-            "dailyline.questionConfig": {
-                "type": "boolean",
-                "default": false,
-                "description": "Ask every day(only Chinese)"
-            }
-        }
-    },
+		"type": "object",
+		"title": "Dailyline configuration",
+		"properties": {
+			"dailyline.questionConfig": {
+				"type": "boolean",
+				"default": false,
+				"description": "Ask every day(only Chinese)"
+			}
+		}
+	},
 	"main": "./out/extension.js",
 	"scripts": {
 		"lint": "eslint src --ext ts",
