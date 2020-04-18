@@ -4,12 +4,13 @@ Calculate your daily programming time and number of lines
 
 ## Demo
 
-command(ctrl) + shift + p
+1.command(ctrl) + shift + p
 
 > dailyline
 
-![2020-04-13-23.24.20](https://s3.qiufengh.com/blog/2020-04-13-23.24.20.gif)
+2.click statusBar
 
+![2020-04-18-23.19.21](https://s3.qiufengh.com/blog/2020-04-18-23.19.21.gif)
 ## config
 
 **dailyline.questionConfig**
