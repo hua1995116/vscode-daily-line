@@ -1,9 +1,8 @@
 # Change Log
 
-All notable changes to the "hello" extension will be documented in this file.
+2020.04.18
+1.Daily configuration
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+2020.04.15 mvp version
+1.Count the number of lines of code written
+2.Statistics code writing time

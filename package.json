@@ -33,6 +33,17 @@
 			}
 		]
 	},
+	"configuration": {
+        "type": "object",
+        "title": "Dailyline configuration",
+        "properties": {
+            "dailyline.questionConfig": {
+                "type": "boolean",
+                "default": false,
+                "description": "Ask every day(only Chinese)"
+            }
+        }
+    },
 	"main": "./out/extension.js",
 	"scripts": {
 		"lint": "eslint src --ext ts",
@@ -61,6 +72,7 @@
 		"webpack-cli": "^3.3.11"
 	},
 	"dependencies": {
+		"axios": "^0.19.2",
 		"find-ps": "^0.1.0",
 		"parse-columns": "^2.0.0"
 	}

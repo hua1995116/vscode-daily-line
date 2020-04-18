@@ -1,11 +1,14 @@
 import { StatusBarAlignment, window, StatusBarItem, WebviewPanel, ExtensionContext, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as axios from 'axios';
 
 interface Cache {
 	[key: string]: {
 		line: number;
-		timesteps: TimeCode[]
+		timesteps: TimeCode[],
+		question: string,
+		quesNum: number
 	}
 }
 
@@ -46,8 +49,9 @@ class DailyLine {
 		this.initCache();
 		const today = this.getToday();
 		this.checkInit(today);
-		this.statusBar.text = `今日 coding ${this.cache[today].line || 0} 行`;
+		this.statusBar.text = `$(code) ${this.cache[today].line || 0} lines`;
 		this.statusBar.show();
+		this.statusBar.command = "dailyline.start";
 	}
 	setNewTimer() {
 		if (!this.timer) {
@@ -148,7 +152,9 @@ class DailyLine {
 		if (!this.cache[today]) {
 			this.cache[today] = {
 				line: 0,
-				timesteps: []
+				timesteps: [],
+				quesNum: 0,
+				question: ''
 			};
 		}
 		if (!this.dayMap[today]) {
@@ -193,6 +199,7 @@ class DailyLine {
 		const day = this.getToday();
 		const time = this.computedTime();
 		const fontFamily = workspace.getConfiguration('editor').fontFamily;
+		const _this = this;
 		const msg = {
 			type: 'update',
 			line,
@@ -201,12 +208,43 @@ class DailyLine {
 			time,
 			day
 		};
-		if (panel) {
+
+		const questionConfig = workspace.getConfiguration('dailyline').get('questionConfig');
+		if (questionConfig) {
+			const todayCache = this.cache[day];
+			if (todayCache.quesNum) {
+				msg.quesNum = todayCache.quesNum;
+				msg.question = todayCache.question;
+				console.log(msg, 'cache');
+				if (panel) {
+					panel.webview.postMessage(msg);
+				}
+			} else {
+				axios.get('https://api.github.com/repos/hua1995116/daily-questions/issues').then(res => {
+					const result = res.data;
+					const lastquestion = result[0];
+					todayCache.quesNum = lastquestion.number;
+					todayCache.question = lastquestion.title;
+					msg.quesNum = todayCache.quesNum;
+					msg.question = todayCache.question;
+					console.log(msg, 'request');
+					_this.syncLocal();
+					if (panel) {
+						panel.webview.postMessage(msg);
+					}
+				}).catch(e => {
+					if (panel) {
+						panel.webview.postMessage(msg);
+					}
+				})
+			}
+		} else {
 			panel.webview.postMessage(msg);
 		}
+		
 	}
 	dispose() {
-
+		this.statusBar.dispose();
 	}
 }
 
