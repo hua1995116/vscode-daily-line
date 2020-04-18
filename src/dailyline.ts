@@ -113,7 +113,15 @@ class DailyLine {
 		} else {
 			const content = fs.readFileSync(this.cachePath).toString();
 			try {
-				this.cache = JSON.parse(content);
+				const cache = JSON.parse(content);
+				const cacheList = Object.keys(cache);
+				if (cacheList.length > 7) {
+					const deleteList = cacheList.slice(0, cacheList.length - 7);
+					deleteList.forEach(item => {
+						delete cache[item];
+					})
+				}
+				this.cache = cache;
 			} catch (e) {
 
 			}
