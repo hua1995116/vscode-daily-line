@@ -10,6 +10,23 @@ command(ctrl) + shift + p
 
 ![2020-04-13-23.24.20](https://s3.qiufengh.com/blog/2020-04-13-23.24.20.gif)
 
+## config
+
+**dailyline.questionConfig**
+
+type: Boolean
+
+default: fasle
+
+desc: Ask every day(only Chinese)
+
+```json
+...
+"dailyline.questionConfig": false
+...
+```
+
+
 ## Thanks
 
 icon from 

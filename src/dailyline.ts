@@ -49,9 +49,12 @@ class DailyLine {
 		this.initCache();
 		const today = this.getToday();
 		this.checkInit(today);
-		this.statusBar.text = `$(code) ${this.cache[today].line || 0} lines`;
+		this.statusBar.text = this.setStatusText(this.cache[today].line || 0);
 		this.statusBar.show();
 		this.statusBar.command = "dailyline.start";
+	}
+	setStatusText(line: number) {
+		return `$(code) ${line} lines`;
 	}
 	setNewTimer() {
 		if (!this.timer) {
@@ -184,7 +187,7 @@ class DailyLine {
 			this.dayMap[today][fileName] = saveLine;
 			this.cache[today].line += addcode;
 			this.syncLocal()
-			this.statusBar.text = `今日 coding ${this.cache[today].line} 行`;
+			this.statusBar.text = this.setStatusText(this.cache[today].line);
 			if (this.panel) {
 				this.setcode();
 			}
