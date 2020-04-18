@@ -1,7 +1,7 @@
 import { StatusBarAlignment, window, StatusBarItem, WebviewPanel, ExtensionContext, workspace } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as axios from 'axios';
+import axios from 'axios';
 
 interface Cache {
 	[key: string]: {
@@ -206,7 +206,9 @@ class DailyLine {
 			fontFamily,
 			bgColor: '#2e3440',
 			time,
-			day
+			day,
+			quesNum: 0,
+			question: '',
 		};
 
 		const questionConfig = workspace.getConfiguration('dailyline').get('questionConfig');
@@ -220,7 +222,7 @@ class DailyLine {
 					panel.webview.postMessage(msg);
 				}
 			} else {
-				axios.get('https://api.github.com/repos/hua1995116/daily-questions/issues').then(res => {
+				axios.get('https://api.github.com/repos/hua1995116/daily-questions/issues?page=1').then((res: any) => {
 					const result = res.data;
 					const lastquestion = result[0];
 					todayCache.quesNum = lastquestion.number;
@@ -232,14 +234,16 @@ class DailyLine {
 					if (panel) {
 						panel.webview.postMessage(msg);
 					}
-				}).catch(e => {
+				}).catch((e: Error) => {
 					if (panel) {
 						panel.webview.postMessage(msg);
 					}
 				})
 			}
 		} else {
-			panel.webview.postMessage(msg);
+			if (panel) {
+				panel.webview.postMessage(msg);
+			}
 		}
 		
 	}
