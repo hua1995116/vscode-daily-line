@@ -72,7 +72,7 @@
 		"webpack-cli": "^3.3.11"
 	},
 	"dependencies": {
-		"axios": "^0.19.2",
+		"axios": "^0.21.1",
 		"find-ps": "^0.1.0",
 		"parse-columns": "^2.0.0"
 	}
